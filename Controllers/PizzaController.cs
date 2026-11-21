@@ -53,22 +53,17 @@ public class PizzaController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("name-{id}")]
-    public ActionResult<Pizza> Update(int id, String name)
+    // DELETE action
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
     {
-        name = name.Trim();
-        if (name.Length == 0)
-            return BadRequest();
-            
-        var existingPizza = PizzaService.Get(id);
-        if(existingPizza is null)
+        var pizza = PizzaService.Get(id);
+    
+        if (pizza is null)
             return NotFound();
         
-        existingPizza.Name = name;
-        PizzaService.Update(existingPizza);           
+        PizzaService.Delete(id);
     
-        return existingPizza;
+        return NoContent();
     }
-
-    // DELETE action
 }
